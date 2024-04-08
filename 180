@@ -31,3 +31,4 @@ sorted_teams = sorted_teams.sort_values(by='Playoff Prediction', ascending=False
 # Print the playoff results for the top 10 teams
 top_10_teams = sorted_teams.head(10)
 print(top_10_teams[['Team', 'Playoff Prediction']])
+print("Go Brewers!")
