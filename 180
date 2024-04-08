@@ -1,0 +1,33 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression
+
+# Read the spreadsheet
+data = pd.read_excel('C:/Users/nparr/OneDrive/Desktop/ITSCM 180/baseball.xlsx')
+
+# Select the relevant columns for training the model
+columns = ['Runs Scored', 'Runs Allowed', 'Wins', 'OBP', 'SLG', 'Team Batting Average']
+X = data.loc[:, columns].values
+
+# Scale the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Get the playoff column for the target variable
+y = data['Playoffs'].values
+
+# Train the multiple regression model
+model = LinearRegression()
+model.fit(X_scaled, y)
+
+# Predict the playoffs for all teams
+predictions = model.predict(X_scaled)
+
+# Sort the teams based on the playoff predictions
+sorted_teams = data.copy()
+sorted_teams['Playoff Prediction'] = predictions
+sorted_teams = sorted_teams.sort_values(by='Playoff Prediction', ascending=False)
+
+# Print the playoff results for the top 10 teams
+top_10_teams = sorted_teams.head(10)
+print(top_10_teams[['Team', 'Playoff Prediction']])
